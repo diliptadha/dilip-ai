@@ -2,21 +2,29 @@ import "dotenv/config";
 
 import documentIntelligenceRouter from "./routes/documentIntelligence.js";
 import express from "express";
+import path from "path";
 import textToSpeechRouter from "./routes/textToSpeech.js";
+import { fileURLToPath } from "url";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const PUBLIC_DIR = path.join(__dirname, "public");
 
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Static assets — serves the landing page at "/"
+app.use(express.static(PUBLIC_DIR));
+
 // Routes
 app.use("/api/document-intelligence", documentIntelligenceRouter);
 app.use("/api/text-to-speech", textToSpeechRouter);
 
-// Root route
-app.get("/", (req, res) => {
+// API index
+app.get("/api", (req, res) => {
   res.status(200).json({
     success: true,
     message: "SarvamAI API",

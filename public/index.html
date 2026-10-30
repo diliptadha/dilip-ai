@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SarvamAI API — Document Intelligence &amp; Text-to-Speech</title>
+    <meta
+      name="description"
+      content="A small Express API that turns documents into structured HTML and text into natural speech using SarvamAI."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎙️</text></svg>"
+    />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav container" aria-label="Main navigation">
+        <a class="brand" href="/">
+          <span class="brand-mark" aria-hidden="true">S</span>
+          <span class="brand-name">SarvamAI<span class="brand-suffix">API</span></span>
+        </a>
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="nav-links"
+        >
+          <span class="sr-only">Toggle navigation</span>
+          <span class="nav-toggle-bar" aria-hidden="true"></span>
+        </button>
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#demo">Try it</a></li>
+          <li><a href="#endpoints">API</a></li>
+          <li><a class="btn btn-small btn-outline" href="/api">API Info</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="eyebrow">
+              <span class="dot" aria-hidden="true"></span> Powered by SarvamAI
+            </p>
+            <h1>
+              Documents in.<br />
+              <span class="gradient-text">Structured output &amp; speech</span> out.
+            </h1>
+            <p class="lede">
+              A lightweight Express service for Indian languages. Upload a PDF or ZIP and get
+              clean, structured HTML back — or convert any text into natural-sounding audio in a
+              single request.
+            </p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#demo">Try the demo</a>
+              <a class="btn btn-ghost" href="#endpoints">Browse endpoints</a>
+            </div>
+            <ul class="hero-stats" aria-label="Highlights">
+              <li><strong>2</strong><span>API routes</span></li>
+              <li><strong>11+</strong><span>Indian languages</span></li>
+              <li><strong>200MB</strong><span>Max upload</span></li>
+            </ul>
+          </div>
+
+          <div class="hero-visual">
+            <div class="code-card">
+              <div class="code-card-head">
+                <span class="traffic"></span>
+                <span class="traffic"></span>
+                <span class="traffic"></span>
+                <span class="code-card-title">terminal</span>
+              </div>
+              <pre><code><span class="tok-key">curl</span> -X POST \
+  http://localhost:3000/api/text-to-speech/convert \
+  -H <span class="tok-str">"Content-Type: application/json"</span> \
+  -d <span class="tok-str">'{ "text": "नमस्ते दुनिया" }'</span>
+
+<span class="tok-ok">→ 200 OK</span>
+{
+  <span class="tok-key">"success"</span>: <span class="tok-num">true</span>,
+  <span class="tok-key">"downloadUrls"</span>: [{ <span class="tok-key">"filename"</span>: <span class="tok-str">"tts_…_0.wav"</span> }]
+}</code></pre>
+            </div>
+            <div class="glow" aria-hidden="true"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <div class="container">
+          <header class="section-head">
+            <h2>Two APIs, one tiny server</h2>
+            <p>Everything you need to bridge documents and voice, without extra infrastructure.</p>
+          </header>
+
+          <div class="cards">
+            <article class="card">
+              <div class="card-icon" aria-hidden="true">📄</div>
+              <h3>Document Intelligence</h3>
+              <p>
+                Send a PDF or a ZIP of page images and receive structured HTML with page-level
+                metrics. Ideal for digitising forms, invoices and scanned records.
+              </p>
+              <ul class="card-list">
+                <li>PDF &amp; ZIP uploads up to 200MB</li>
+                <li>Configurable language &amp; output format</li>
+                <li>Job-based processing with status polling</li>
+              </ul>
+              <a class="card-link" href="/api/document-intelligence/health">
+                Check health <span aria-hidden="true">→</span>
+              </a>
+            </article>
+
+            <article class="card">
+              <div class="card-icon" aria-hidden="true">🎙️</div>
+              <h3>Text to Speech</h3>
+              <p>
+                Turn text into natural speech with selectable speakers, pace and sample rate.
+                Audio is generated on demand and served back as downloadable WAV files.
+              </p>
+              <ul class="card-list">
+                <li>Bulbul v3 model</li>
+                <li>Multiple Indian language voices</li>
+                <li>Adjustable pace &amp; sample rate</li>
+              </ul>
+              <a class="card-link" href="/api/text-to-speech/health">
+                Check health <span aria-hidden="true">→</span>
+              </a>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="demo" class="section demo-section">
+        <div class="container">
+          <header class="section-head">
+            <h2>Hear it work</h2>
+            <p>Type something below and the page calls <code>/api/text-to-speech/convert</code>.</p>
+          </header>
+
+          <div class="demo-grid">
+            <form class="demo-form" id="tts-form">
+              <label class="field">
+                <span>Text</span>
+                <textarea id="tts-text" name="text" rows="4" required>नमस्ते! यह एक छोटा सा डेमो है।</textarea>
+              </label>
+
+              <div class="field-row">
+                <label class="field">
+                  <span>Language</span>
+                  <select id="tts-lang" name="target_language_code">
+                    <option value="hi-IN">Hindi (hi-IN)</option>
+                    <option value="en-IN">English (en-IN)</option>
+                    <option value="bn-IN">Bengali (bn-IN)</option>
+                    <option value="ta-IN">Tamil (ta-IN)</option>
+                    <option value="te-IN">Telugu (te-IN)</option>
+                    <option value="mr-IN">Marathi (mr-IN)</option>
+                    <option value="gu-IN">Gujarati (gu-IN)</option>
+                    <option value="kn-IN">Kannada (kn-IN)</option>
+                  </select>
+                </label>
+
+                <label class="field">
+                  <span>Speaker</span>
+                  <select id="tts-speaker" name="speaker">
+                    <option value="shubh">Shubh</option>
+                    <option value="anushka">Anushka</option>
+                    <option value="manisha">Manisha</option>
+                    <option value="vidya">Vidya</option>
+                    <option value="arya">Arya</option>
+                  </select>
+                </label>
+              </div>
+
+              <button class="btn btn-primary btn-block" type="submit" id="tts-submit">
+                Generate speech
+              </button>
+              <p class="form-note" id="tts-status" role="status" aria-live="polite"></p>
+            </form>
+
+            <div class="demo-output">
+              <h3>Output</h3>
+              <p class="demo-output-hint" id="tts-hint">
+                Audio players will appear here once generation finishes.
+              </p>
+              <div id="tts-players" class="players"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="endpoints" class="section">
+        <div class="container">
+          <header class="section-head">
+            <h2>API reference</h2>
+            <p>Three routes, plain JSON responses.</p>
+          </header>
+
+          <div class="endpoint-list">
+            <div class="endpoint">
+              <span class="method method-post">POST</span>
+              <code>/api/document-intelligence/process</code>
+              <p>Process a PDF or ZIP document and return download links.</p>
+            </div>
+            <div class="endpoint">
+              <span class="method method-post">POST</span>
+              <code>/api/text-to-speech/convert</code>
+              <p>Convert text into speech and receive downloadable WAV files.</p>
+            </div>
+            <div class="endpoint">
+              <span class="method method-get">GET</span>
+              <code>/api/text-to-speech/download/:filename</code>
+              <p>Download a previously generated audio file.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <p>Built with Express &amp; SarvamAI. Runs locally on port 3000.</p>
+        <p class="footer-meta">v1.0.0</p>
+      </div>
+    </footer>
+
+    <script src="/app.js" type="module"></script>
+  </body>
+</html>
